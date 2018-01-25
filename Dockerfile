@@ -15,6 +15,10 @@ RUN apt-get update && apt-get install -y postgresql-client unzip xmlstarlet && \
     mkdir -p /usr/local/share/jasperreports-pro/license && \
     rm -rf /tmp/*
 
+# Copy jasperreports server license file from resources dir.
+# Build will fail if file not present.
+COPY resources/jasperserver.license /usr/local/share/jasperreports-pro/license/jasperserver.license
+
 # Extract phantomjs, move to /usr/local/share/phantomjs, link to /usr/local/bin.
 # Comment out if phantomjs not required.
 RUN wget \
