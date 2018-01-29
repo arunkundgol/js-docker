@@ -41,7 +41,7 @@ phantomjs-2.1.1-linux-x86_64.tar.bz2" \
 #    rm -rf /tmp/*
 
 # Set default environment options.
-ENV CATALINA_OPTS="${JAVA_OPTIONS:--Xmx2g -XX:+UseParNewGC \
+ENV CATALINA_OPTS="${JAVA_OPTIONS:-${MEM_OPTIONS:--Xmx2g} -XX:+UseParNewGC \
     -XX:+UseConcMarkSweepGC} \
     -Djs.license.directory=${JRS_LICENSE:-/usr/local/share/jasperreports-pro/license}"
 
@@ -77,7 +77,9 @@ ENV CATALINA_OPTS="${JAVA_OPTIONS:--Xmx2g -XX:+UseParNewGC \
 # Expose ports. Note that you must do one of the following:
 # map them to local ports at container runtime via "-p 8080:8080 -p 8443:8443"
 # or use dynamic ports.
-EXPOSE ${HTTP_PORT:-8080} ${HTTPS_PORT:-8443}
+# EXPOSE ${HTTP_PORT:-8080} ${HTTPS_PORT:-8443}
+# Expose only port 8080. Comment based on which port you'd like to use.
+EXPOSE ${HTTP_PORT:-8080}
 
 COPY scripts/entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
