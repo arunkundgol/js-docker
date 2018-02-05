@@ -7,10 +7,10 @@
 
 # This script sets up and runs JasperReports Server on container start.
 # Default "run" command, set in Dockerfile, executes run_jasperserver.
-# If webapps/jasperserver-pro does not exist, run_jasperserver 
+# If webapps/jasperserver-pro does not exist, run_jasperserver
 # redeploys webapp. If "jasperserver" database does not exist,
 # run_jasperserver redeploys minimal database.
-# Additional "init" only calls init_database, which will try to recreate 
+# Additional "init" only calls init_database, which will try to recreate
 # database and fail if DB exists.
 
 # Sets script to fail if any command fails.
@@ -84,7 +84,7 @@ run_jasperserver() {
     setup_jasperserver deploy-webapp-pro
   fi
 
-    
+
   # Wait for PostgreSQL.
   retry_postgresql
 
@@ -94,7 +94,7 @@ run_jasperserver() {
   if [[ ${JRS_DBCONFIG_REGEN} ]]; then
     setup_jasperserver deploy-webapp-datasource-configs deploy-jdbc-jar
   fi
- 
+
   # Set up jasperserver database if it is not present.
   if [[ `test_postgresql -l | grep -i ${DB_NAME:-jasperserver} | wc -l` < 1 \
     ]]; then
@@ -118,6 +118,8 @@ run_jasperserver() {
 
   # Apply customization zip if present.
   config_customization
+  # Override the default home page loaded by Tomcat
+  cp /tmp/index.html /usr/local/tomcat/webapps/ROOT/
 
   # Start tomcat.
   catalina.sh run
@@ -227,4 +229,3 @@ case "$1" in
   *)
     exec "$@"
 esac
-
