@@ -83,7 +83,7 @@ ENV CATALINA_OPTS="${JAVA_OPTIONS:--Xmx2g -XX:+UseParNewGC \
 EXPOSE ${HTTP_PORT:-8080}
 
 # COPY the created index.html to override the default home page loaded by Tomcat
-COPY resources/index.html /usr/local/tmp/tomcat/webapps/ROOT/
+COPY resources/index.html /tmp/
 
 # COPY the entrypoint.sh
 COPY scripts/entrypoint.sh /
